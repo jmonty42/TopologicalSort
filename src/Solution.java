@@ -16,7 +16,7 @@ public class Solution {
     public static String findOrdering(int[][] edgeList) {
         // node -> nodes that it depends on
         Map<Integer, Set<Integer>> dependencies = new HashMap<>();
-        // Nodes with no incoming edges (nothing depends on it)
+        // Nodes with no incoming edges (they don't depend on other nodes)
         Set<Integer> independentNodes = new HashSet<>();
         for (int[] pair : edgeList) {
             //pair[1] depends on pair[0], pair[0] must come before pair[1] in the final ordering
@@ -36,8 +36,8 @@ public class Solution {
             }
         }
 
-        System.out.println("dependencies: " + dependencies);
-        System.out.println("independentNodes: " + independentNodes);
+        //System.out.println("dependencies: " + dependencies);
+        //System.out.println("independentNodes: " + independentNodes);
 
         List<Integer> orderedList = new ArrayList<>();
 
@@ -48,30 +48,30 @@ public class Solution {
             Iterator<Integer> setIterator = independentNodes.iterator();
             Integer nextNodeInList = setIterator.next();
             dependencies.remove(nextNodeInList);
-            System.out.println("Processing independent node: " + nextNodeInList);
+            //System.out.println("Processing independent node: " + nextNodeInList);
             // add that node to the ordered list
             orderedList.add(nextNodeInList);
             setIterator.remove();
-            System.out.println("orderedList: " + orderedList);
-            System.out.println("independentNodes: " + independentNodes);
+            //System.out.println("orderedList: " + orderedList);
+            //System.out.println("independentNodes: " + independentNodes);
             // Iterator is needed since we'll be modifying the map as we iterate
             Iterator<Map.Entry<Integer, Set<Integer>>> mapIterator = dependencies.entrySet().iterator();
             while(mapIterator.hasNext()) {
                 Map.Entry<Integer, Set<Integer>> mapEntry = mapIterator.next();
                 if (mapEntry.getValue().contains(nextNodeInList)) {
-                    System.out.println("Removing " + nextNodeInList + " from the dependency set of " + mapEntry.getKey());
+                    //System.out.println("Removing " + nextNodeInList + " from the dependency set of " + mapEntry.getKey());
                     // if a node is dependent on the node that was just added to the ordered list, remove that node from
                     // the list of dependencies (as it has been satisfied by being placed on the list)
                     mapEntry.getValue().remove(nextNodeInList);
-                    System.out.println("dependencies: " + dependencies);
+                    //System.out.println("dependencies: " + dependencies);
                     if (mapEntry.getValue().isEmpty()) {
-                        System.out.println(mapEntry.getKey() + " has an empty dependency set now, removing from the map.");
+                        //System.out.println(mapEntry.getKey() + " has an empty dependency set now, removing from the map.");
                         // if the dependency list for the node is now empty, add it to the set and remove it from the
                         // map
                         independentNodes.add(mapEntry.getKey());
                         mapIterator.remove();
-                        System.out.println("independentNodes: " + independentNodes);
-                        System.out.println("dependencies: " + dependencies);
+                        //System.out.println("independentNodes: " + independentNodes);
+                        //System.out.println("dependencies: " + dependencies);
                     }
                 }
             }
